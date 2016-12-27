@@ -201,34 +201,25 @@
 			<field>ВидДисконтнойКарты</field>
 		</item>
 		<item xsi:type="SelectedItemField">
+			<field>ВладелецДисконтнойКарты</field>
+		</item>
+		<item xsi:type="SelectedItemField">
 			<field>ДисконтнаяКарта</field>
 		</item>
 		<item xsi:type="SelectedItemField">
-			<field>ВладелецКарты</field>
-		</item>
-		<item xsi:type="SelectedItemField">
-			<field>Документ</field>
+			<field>Магазин</field>
 		</item>
 		<item xsi:type="SelectedItemField">
 			<field>Номенклатура</field>
 		</item>
 		<item xsi:type="SelectedItemField">
-			<field>Характеристика</field>
-		</item>
-		<item xsi:type="SelectedItemField">
-			<field>Количество</field>
-		</item>
-		<item xsi:type="SelectedItemField">
 			<field>Период</field>
 		</item>
 		<item xsi:type="SelectedItemField">
-			<field>Сумма</field>
+			<field>Регистратор</field>
 		</item>
 		<item xsi:type="SelectedItemField">
-			<field>Скидка</field>
-		</item>
-		<item xsi:type="SelectedItemField">
-			<field>ПроцентСкидки</field>
+			<field>СуммаПродажи</field>
 		</item>
 	</selection>
 	<filter>
@@ -248,13 +239,11 @@
 			<use>false</use>
 			<left xsi:type="dcscor:Field">ВидДисконтнойКарты</left>
 			<comparisonType>Equal</comparisonType>
-			<right xsi:type="dcscor:DesignTimeValue"/>
 		</item>
 		<item xsi:type="FilterItemComparison">
 			<use>false</use>
 			<left xsi:type="dcscor:Field">Магазин</left>
 			<comparisonType>Equal</comparisonType>
-			<right xsi:type="dcscor:DesignTimeValue"/>
 		</item>
 	</filter>
 	<dataParameters>
@@ -264,6 +253,14 @@
 			<dcscor:value xsi:type="xs:dateTime">0001-01-01T00:00:00</dcscor:value>
 		</dcscor:item>
 	</dataParameters>
+	<item xsi:type="StructureItemGroup">
+		<order>
+			<item xsi:type="OrderItemAuto"/>
+		</order>
+		<selection>
+			<item xsi:type="SelectedItemAuto"/>
+		</selection>
+	</item>
 </Settings>﻿<?xml version="1.0" encoding="UTF-8"?>
 <SchemaFile xmlns="" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<dataCompositionSchema xmlns="http://v8.1c.ru/8.1/data-composition-system/schema"/>
