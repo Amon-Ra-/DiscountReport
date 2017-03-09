@@ -74,8 +74,14 @@
 				<field>Дата</field>
 			</field>
 			<field xsi:type="DataSetFieldField">
-				<dataPath>ДисконтнаяКартаВидДисконтнойКарты</dataPath>
-				<field>ДисконтнаяКартаВидДисконтнойКарты</field>
+				<dataPath>ВидДисконтнойКарты</dataPath>
+				<field>ВидДисконтнойКарты</field>
+				<title xmlns:d5p1="http://v8.1c.ru/8.1/data/core" xsi:type="d5p1:LocalStringType">
+					<d5p1:item>
+						<d5p1:lang>ru</d5p1:lang>
+						<d5p1:content>Вид дисконтной карты</d5p1:content>
+					</d5p1:item>
+				</title>
 			</field>
 			<dataSource>ИсточникДанных1</dataSource>
 			<query>ВЫБРАТЬ РАЗРЕШЕННЫЕ РАЗЛИЧНЫЕ
@@ -113,11 +119,12 @@
 	ЧекККМСкидкиНаценки.Ссылка.ВладелецДисконтнойКарты,
 	ЧекККМСкидкиНаценки.Ссылка.ДисконтнаяКарта,
 	ЧекККМСкидкиНаценки.Ссылка.Магазин,
-	ЧекККМСкидкиНаценки.Ссылка.ДисконтнаяКарта.ВидДисконтнойКарты КАК ДисконтнаяКартаВидДисконтнойКарты
+	ЧекККМСкидкиНаценки.Ссылка.ДисконтнаяКарта.ВидДисконтнойКарты КАК ВидДисконтнойКарты
 ИЗ
 	ВТТовары КАК ВТТовары
 		ВНУТРЕННЕЕ СОЕДИНЕНИЕ Документ.ЧекККМ.СкидкиНаценки КАК ЧекККМСкидкиНаценки
 		ПО (ЧекККМСкидкиНаценки.Ссылка = ВТТовары.Ссылка)
+			И ВТТовары.КлючСвязи = ЧекККМСкидкиНаценки.КлючСвязи
 ГДЕ
 	ЧекККМСкидкиНаценки.Ссылка.Проведен
 	И НЕ ЧекККМСкидкиНаценки.СкидкаНаценка = ЗНАЧЕНИЕ(Справочник.СкидкиНаценки.ПустаяССылка)
@@ -144,11 +151,12 @@
 ИЗ
 	Документ.ЧекККМ КАК ЧекККМ
 ГДЕ
-	ЧекККМ.Проведен = &amp;Проведен
+	ЧекККМ.Проведен
 	И ЧекККМ.Дата МЕЖДУ &amp;НачалоПериода И &amp;КонецПериода
 	И ЧекККМ.ДисконтнаяКарта.ВидДисконтнойКарты.Наименование ПОДОБНО "Постоянный покупатель"
 
 УПОРЯДОЧИТЬ ПО
+	Дата,
 	Регистратор</query>
 		</dataSet>
 		<totalField>
@@ -209,20 +217,6 @@
 			</value>
 			<useRestriction>false</useRestriction>
 		</parameter>
-		<parameter>
-			<name>Проведен</name>
-			<title xmlns:d4p1="http://v8.1c.ru/8.1/data/core" xsi:type="d4p1:LocalStringType">
-				<d4p1:item>
-					<d4p1:lang>ru</d4p1:lang>
-					<d4p1:content>Проведен</d4p1:content>
-				</d4p1:item>
-			</title>
-			<valueType>
-				<Type xmlns="http://v8.1c.ru/8.1/data/core">xs:boolean</Type>
-			</valueType>
-			<value xsi:type="xs:boolean">false</value>
-			<useRestriction>true</useRestriction>
-		</parameter>
 		<settingsVariant>
 			<name xmlns="http://v8.1c.ru/8.1/data-composition-system/settings">Продажи по дисконтным картам</name>
 			<presentation xmlns="http://v8.1c.ru/8.1/data-composition-system/settings" xmlns:d4p1="http://v8.1c.ru/8.1/data/core" xsi:type="d4p1:LocalStringType">
@@ -258,10 +252,13 @@
 			<field>Цена</field>
 		</item>
 		<item xsi:type="SelectedItemField">
+			<field>СкидкаНаценка</field>
+		</item>
+		<item xsi:type="SelectedItemField">
 			<field>СуммаПродажи</field>
 		</item>
 		<item xsi:type="SelectedItemField">
-			<field>СкидкаНаценка</field>
+			<field>ВидДисконтнойКарты</field>
 		</item>
 		<item xsi:type="SelectedItemField">
 			<field>ДисконтнаяКарта</field>
@@ -303,11 +300,9 @@
 		<dcscor:item xsi:type="SettingsParameterValue">
 			<dcscor:parameter>Период</dcscor:parameter>
 			<dcscor:value xsi:type="v8:StandardPeriod">
-				<v8:variant xsi:type="v8:StandardPeriodVariant">Custom</v8:variant>
-				<v8:startDate>0001-01-01T00:00:00</v8:startDate>
-				<v8:endDate>0001-01-01T00:00:00</v8:endDate>
+				<v8:variant xsi:type="v8:StandardPeriodVariant">ThisMonth</v8:variant>
 			</dcscor:value>
-			<userSettingID>b2ba663c-ad9f-425b-bded-1b1682d925ed</userSettingID>
+			<userSettingID>fcf0e9b4-c807-4360-a56d-7acde808c1b3</userSettingID>
 		</dcscor:item>
 	</dataParameters>
 	<outputParameters>
