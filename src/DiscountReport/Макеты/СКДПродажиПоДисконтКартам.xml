@@ -66,16 +66,6 @@
 				<field>ДисконтнаяКарта</field>
 			</field>
 			<field xsi:type="DataSetFieldField">
-				<dataPath>Период</dataPath>
-				<field>Период</field>
-				<title xmlns:d5p1="http://v8.1c.ru/8.1/data/core" xsi:type="d5p1:LocalStringType">
-					<d5p1:item>
-						<d5p1:lang>ru</d5p1:lang>
-						<d5p1:content>Период</d5p1:content>
-					</d5p1:item>
-				</title>
-			</field>
-			<field xsi:type="DataSetFieldField">
 				<dataPath>Магазин</dataPath>
 				<field>Магазин</field>
 			</field>
@@ -88,6 +78,10 @@
 						<d5p1:content>Вид дисконтной карты</d5p1:content>
 					</d5p1:item>
 				</title>
+			</field>
+			<field xsi:type="DataSetFieldField">
+				<dataPath>Дата</dataPath>
+				<field>Дата</field>
 			</field>
 			<dataSource>ИсточникДанных1</dataSource>
 			<query>ВЫБРАТЬ РАЗРЕШЕННЫЕ РАЗЛИЧНЫЕ
@@ -113,7 +107,7 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 ВЫБРАТЬ РАЗРЕШЕННЫЕ РАЗЛИЧНЫЕ
-	ЧекККМСкидкиНаценки.Ссылка.Дата КАК Период,
+	ЧекККМСкидкиНаценки.Ссылка.Дата КАК Дата,
 	ЧекККМСкидкиНаценки.Ссылка КАК Регистратор,
 	ЧекККМСкидкиНаценки.СкидкаНаценка КАК СкидкаНаценка,
 	ВТТовары.Номенклатура КАК Номенклатура,
@@ -125,40 +119,26 @@
 	ЧекККМСкидкиНаценки.Ссылка.ВладелецДисконтнойКарты,
 	ЧекККМСкидкиНаценки.Ссылка.ДисконтнаяКарта,
 	ЧекККМСкидкиНаценки.Ссылка.Магазин,
-	ЧекККМСкидкиНаценки.Ссылка.ДисконтнаяКарта.ВидКарты КАК ВидДисконтнойКарты
+	ЧекККМСкидкиНаценки.Ссылка.ДисконтнаяКарта.ВидДисконтнойКарты КАК ВидДисконтнойКарты
 ИЗ
 	ВТТовары КАК ВТТовары
-		ВНУТРЕННЕЕ СОЕДИНЕНИЕ Документ.ЧекККМ.СкидкиНаценки КАК ЧекККМСкидкиНаценки
+		ЛЕВОЕ СОЕДИНЕНИЕ Документ.ЧекККМ.СкидкиНаценки КАК ЧекККМСкидкиНаценки
 		ПО (ЧекККМСкидкиНаценки.Ссылка = ВТТовары.Ссылка)
-			И ВТТовары.КлючСвязи = ЧекККМСкидкиНаценки.КлючСвязи
 ГДЕ
 	ЧекККМСкидкиНаценки.Ссылка.Проведен
 	И ЧекККМСкидкиНаценки.Ссылка.СкидкиРассчитаны
 	И НЕ ЧекККМСкидкиНаценки.СкидкаНаценка = ЗНАЧЕНИЕ(Справочник.СкидкиНаценки.ПустаяССылка)
-	И ЧекККМСкидкиНаценки.Ссылка.Дата МЕЖДУ &amp;НачалоПериода И &amp;КонецПериода
 	И ТИПЗНАЧЕНИЯ(ЧекККМСкидкиНаценки.СкидкаНаценка) = ТИП(Справочник.СкидкиНаценки)
+	И НЕ ЧекККМСкидкиНаценки.Ссылка.ДисконтнаяКарта = ЗНАЧЕНИЕ(Справочник.ИнформационныеКарты.ПустаяСсылка)
+	И ЧекККМСкидкиНаценки.Ссылка.Дата МЕЖДУ &amp;НачалоПериода И &amp;КонецПериода
 
 УПОРЯДОЧИТЬ ПО
 	Регистратор</query>
 		</dataSet>
-		<parameter>
-			<name>Период</name>
-			<title xmlns:d4p1="http://v8.1c.ru/8.1/data/core" xsi:type="d4p1:LocalStringType">
-				<d4p1:item>
-					<d4p1:lang>ru</d4p1:lang>
-					<d4p1:content>Период</d4p1:content>
-				</d4p1:item>
-			</title>
-			<valueType>
-				<Type xmlns="http://v8.1c.ru/8.1/data/core">StandardPeriod</Type>
-			</valueType>
-			<value xmlns:d4p1="http://v8.1c.ru/8.1/data/core" xsi:type="d4p1:StandardPeriod">
-				<d4p1:variant xsi:type="d4p1:StandardPeriodVariant">Custom</d4p1:variant>
-				<d4p1:startDate>0001-01-01T00:00:00</d4p1:startDate>
-				<d4p1:endDate>0001-01-01T00:00:00</d4p1:endDate>
-			</value>
-			<useRestriction>false</useRestriction>
-		</parameter>
+		<totalField>
+			<dataPath>СуммаПродажи</dataPath>
+			<expression>Сумма(СуммаПродажи)</expression>
+		</totalField>
 		<parameter>
 			<name>НачалоПериода</name>
 			<title xmlns:d4p1="http://v8.1c.ru/8.1/data/core" xsi:type="d4p1:LocalStringType">
@@ -175,6 +155,8 @@
 			</valueType>
 			<value xsi:type="xs:dateTime">0001-01-01T00:00:00</value>
 			<useRestriction>true</useRestriction>
+			<expression>&amp;Период.ДатаНачала</expression>
+			<availableAsField>false</availableAsField>
 		</parameter>
 		<parameter>
 			<name>КонецПериода</name>
@@ -192,6 +174,24 @@
 			</valueType>
 			<value xsi:type="xs:dateTime">0001-01-01T00:00:00</value>
 			<useRestriction>true</useRestriction>
+			<expression>&amp;Период.ДатаОкончания</expression>
+			<availableAsField>false</availableAsField>
+		</parameter>
+		<parameter>
+			<name>Период</name>
+			<title xmlns:d4p1="http://v8.1c.ru/8.1/data/core" xsi:type="d4p1:LocalStringType">
+				<d4p1:item>
+					<d4p1:lang>ru</d4p1:lang>
+					<d4p1:content>Период</d4p1:content>
+				</d4p1:item>
+			</title>
+			<valueType>
+				<Type xmlns="http://v8.1c.ru/8.1/data/core">StandardPeriod</Type>
+			</valueType>
+			<value xmlns:d4p1="http://v8.1c.ru/8.1/data/core" xsi:type="d4p1:StandardPeriod">
+				<d4p1:variant xsi:type="d4p1:StandardPeriodVariant">LastMonth</d4p1:variant>
+			</value>
+			<useRestriction>false</useRestriction>
 		</parameter>
 		<settingsVariant>
 			<name xmlns="http://v8.1c.ru/8.1/data-composition-system/settings">Продажи по дисконтным картам</name>
@@ -207,7 +207,7 @@
 <Settings xmlns="http://v8.1c.ru/8.1/data-composition-system/settings" xmlns:dcscor="http://v8.1c.ru/8.1/data-composition-system/core" xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:v8="http://v8.1c.ru/8.1/data/core" xmlns:v8ui="http://v8.1c.ru/8.1/data/ui" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<selection>
 		<item xsi:type="SelectedItemField">
-			<field>Период</field>
+			<field>СистемныеПоля.НомерПоПорядку</field>
 		</item>
 		<item xsi:type="SelectedItemField">
 			<field>Магазин</field>
@@ -266,27 +266,56 @@
 			<use>false</use>
 			<left xsi:type="dcscor:Field">ВидДисконтнойКарты</left>
 			<comparisonType>Equal</comparisonType>
-			<right xsi:type="dcscor:DesignTimeValue"/>
 			<userSettingID>5a2886c0-4478-4512-80bd-334eaf7b5683</userSettingID>
 		</item>
 	</filter>
 	<dataParameters>
 		<dcscor:item xsi:type="SettingsParameterValue">
-			<dcscor:use>false</dcscor:use>
 			<dcscor:parameter>Период</dcscor:parameter>
 			<dcscor:value xsi:type="v8:StandardPeriod">
-				<v8:variant xsi:type="v8:StandardPeriodVariant">LastMonth</v8:variant>
+				<v8:variant xsi:type="v8:StandardPeriodVariant">Custom</v8:variant>
+				<v8:startDate>0001-01-01T00:00:00</v8:startDate>
+				<v8:endDate>0001-01-01T00:00:00</v8:endDate>
 			</dcscor:value>
-			<userSettingID>083eab2c-5cb8-4a5a-bead-d5bdbcafc686</userSettingID>
+			<userSettingID>b2ba663c-ad9f-425b-bded-1b1682d925ed</userSettingID>
 		</dcscor:item>
 	</dataParameters>
+	<outputParameters>
+		<dcscor:item xsi:type="SettingsParameterValue">
+			<dcscor:parameter>РасположениеИтогов</dcscor:parameter>
+			<dcscor:value xsi:type="dcscor:DataCompositionTotalPlacement">Begin</dcscor:value>
+		</dcscor:item>
+	</outputParameters>
 	<item xsi:type="StructureItemGroup">
+		<groupItems>
+			<item xsi:type="GroupItemField">
+				<field>Магазин</field>
+				<groupType>Items</groupType>
+				<periodAdditionType>None</periodAdditionType>
+				<periodAdditionBegin xsi:type="xs:dateTime">0001-01-01T00:00:00</periodAdditionBegin>
+				<periodAdditionEnd xsi:type="xs:dateTime">0001-01-01T00:00:00</periodAdditionEnd>
+			</item>
+		</groupItems>
 		<order>
 			<item xsi:type="OrderItemAuto"/>
 		</order>
 		<selection>
 			<item xsi:type="SelectedItemAuto"/>
 		</selection>
+		<item xsi:type="StructureItemGroup">
+			<order>
+				<item xsi:type="OrderItemAuto"/>
+			</order>
+			<selection>
+				<item xsi:type="SelectedItemAuto"/>
+			</selection>
+			<outputParameters>
+				<dcscor:item xsi:type="SettingsParameterValue">
+					<dcscor:parameter>РасположениеИтогов</dcscor:parameter>
+					<dcscor:value xsi:type="dcscor:DataCompositionTotalPlacement">Begin</dcscor:value>
+				</dcscor:item>
+			</outputParameters>
+		</item>
 	</item>
 </Settings>﻿<?xml version="1.0" encoding="UTF-8"?>
 <SchemaFile xmlns="" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
